@@ -1,5 +1,7 @@
 <%@ page import="java.util.regex.Matcher"%>
 <%@ page import="java.util.regex.Pattern"%>
+<%@include file="./includes/menu.jsp" %>
+<%@ page import="lesson04.DBWork"%>
 
 <%
 Pattern pattern = null;
@@ -73,7 +75,9 @@ if(login!=null){
 	}
 	
 	if(!isError){
-	out.write("Registration sucsesfull!");
+	DBWork dbWork = new DBWork();
+	dbWork.setUser(login, password, name, rePassword, gender, address, comment, agree);
+	out.write("<br>Registration sucsesfull!");
 	showForm = false;
 }
 }
@@ -84,26 +88,57 @@ errorText.append("</ul>");
 
 if(showForm){%>
 
-<center>
-<table>
-<tr><td>
+<body>
 <form>
-<table>
-<tr><td>login: </td><td><input type="text" name="login" value="<%=(login!=null?login:"")%>"></td></tr>
-<tr><td>password: </td><td><input type="password" name="password"></td></tr>
-<tr><td>retype password: </td><td><input type="password" name="rePassword"></td></tr>
-<tr><td>name: </td><td><input type="text" name="name"></td></tr>
-<tr><td>gender: </td><td>M<input type="radio" name="gender" value="male" <%=(gender!=null && gender.equals("male")?"checked":"")%> checked>F<input type="radio" name="gender" value="female" <%=(gender!=null &&gender.equals("female")?"checked":"")%>></td></tr>
-<tr><td>address: </td><td><select name ="address"><option value="lnr"<%=(address!=null && address.equals("lnr")?"selected":"")%>>LRN</option><option value="dnr"<%=(address!=null && address.equals("dnr")?"selected":"")%>>DNR</option><option value="crimea"<%=(address!=null && address.equals("crimea")?"selected":"")%>>Crimea</option></select></td></tr>
-<tr><td>comment: </td><td><textarea name = "comment" cols = "15" rows="10"></textarea></td></tr>
-<tr><td>I agree: </td><td><input type="checkbox" name = "agree"></td></tr>
-<tr><td></td><td><input type="submit" value="send"></td></tr>
-</table>
+<div class="myblock"><%out.write(errorText.toString());%></div>
 </form>
-</td>
-<td>
-<%out.write(errorText.toString());%>
-</td>
-</tr>
-</table>
+<form id="loginForm" action="" method="post">
+
+	<div class="field">
+		<label>Login:</label>
+		<div class="input"><input type="text" name="login" value="<%=(login!=null?login:"")%>" id="login" /></div>
+	</div>
+	
+	<div class="field">
+		<label>Password:</label>
+		<div class="input"><input type="password" name="password" value="<%=(password!=null?password:"")%>" id="password" /></div>
+	</div>
+	
+	<div class="field">
+		<label>Confirm password:</label>
+		<div class="input"><input type="password" name="rePassword" value="<%=(rePassword!=null?rePassword:"")%>" id="repassword" /></div>
+	</div>
+	
+	<div class="field">
+		<label>Enter your name:</label>
+		<div class="input"><input type="text" name="name" value="<%=(name!=null?name:"")%>" id="name" /></div>
+	</div>
+	
+	<div class="radio" align="center">
+		<label>Gender:</label>
+		<div class="radio">M<input type="radio" name="gender" value="male" <%=(gender!=null && gender.equals("male")?"checked":"")%> checked>F<input type="radio" name="gender" value="female" <%=(gender!=null &&gender.equals("female")?"checked":"")%>/></div>
+	</div>
+	
+	<div class="field" align="center">
+		<label>Enter your address:</label>
+		<div class="select"><select name ="address"><option value="lnr"<%=(address!=null && address.equals("lnr")?"selected":"")%>>LRN</option><option value="dnr"<%=(address!=null && address.equals("dnr")?"selected":"")%>>DNR</option><option value="crimea"<%=(address!=null && address.equals("crimea")?"selected":"")%>>Crimea</option></select></div>
+	</div>
+	
+	<div class="field" align="center">
+		<label>Enter your comment:</label>
+		<div class="textarea"><textarea style="overflow:auto;resize:none" name = "comment" cols = "30" rows="10" value="<%=(comment!=null?comment:"")%>"></textarea></div>
+	</div>
+	
+	<div class="checkbox" align="center">
+		<label>I agree</label>
+		<div class="checkbox"><input type="checkbox" name = "agree"></div>
+	</div>
+
+	<div class="submit">
+		<button type="submit">Enter</button>
+	</div>
+
+</form>
+</body>
+
 <%}%>
