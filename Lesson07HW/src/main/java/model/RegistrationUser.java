@@ -1,4 +1,4 @@
-package regModel;
+package model;
 
 public class RegistrationUser {
 	private String login;

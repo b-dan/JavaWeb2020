@@ -1,7 +1,9 @@
-package regController;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,21 +13,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import regModel.RegistrationUser;
+import model.RegistrationUser;
 import service.DBWork;
 
 
 
 public class RegController extends HttpServlet{
 	
-	private StringBuilder errorText = new StringBuilder();
+	private static final String REG_FORM = "WEB-INF/views/formRegView.jsp";
+	private static final String REG_SUCCESS = "WEB-INF/views/regSuccess.jsp";
+	private static final String CHECKED = "checked";
+	private static final String SELECTED = "selected";
+	private List <String> errorText = new ArrayList<String>();
 	private String [] genderArr = {"",""};
 	private String [] addressArr = {"","",""};
 	RegistrationUser regUser = new RegistrationUser();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDispatcher rd = req.getRequestDispatcher("WEB-INF/views/formRegView.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher(REG_FORM);
 		rd.forward(req, resp);
 	}
 	
@@ -45,34 +51,35 @@ public class RegController extends HttpServlet{
 		String agree = req.getParameter("agree");
 		
 		if(login!=null){
-			errorText.append("<ul>");
 			if(login.isEmpty()){
-				errorText.append("<li>The 'login' is empty.</li>");
+				errorText.add("The 'login' is empty.");
 			}else{
 				pattern = Pattern.compile("^(\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,6})$");
 				matcher = pattern.matcher(login);
 				if(!matcher.matches()){
-					errorText.append("<li>The 'login' must be an email.</li>");
+					errorText.add("The 'login' must be an email.");
+					regUser.setLogin(login);
 				}else {
 					regUser.setLogin(login);
 				}
 			}
 			if(password.isEmpty()){
-				errorText.append("<li>The 'password' is empty.</li>");
+				errorText.add("The 'password' is empty.");
 			}else {
 				regUser.setPassword(password);
 			}
 			if(rePassword.isEmpty()){
-				errorText.append("<li>The 'rePassword' is empty.</li>");
+				errorText.add("The 'rePassword' is empty.");
 			}else{
 				if(!password.equals(rePassword)){
-					errorText.append("<li>The 'password' and 'rePassword' are not equals.</li>");
+					errorText.add("The 'password' and 'rePassword' are not equals.");
+					regUser.setRePassword(rePassword);
 				}
 				else{
 					pattern = Pattern.compile("^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})$");
 					matcher = pattern.matcher(password);
 					if(!matcher.matches()){
-						errorText.append("<li>Your 'password' do not fit the requirements.</li>");
+						errorText.add("Your 'password' do not fit the requirements.");
 					}else {
 						regUser.setPassword(password);
 						regUser.setRePassword(rePassword);
@@ -80,56 +87,55 @@ public class RegController extends HttpServlet{
 				}
 			}
 			if(name.isEmpty()){
-				errorText.append("<li>The 'name' is empty.</li>");
+				errorText.add("The 'name' is empty.");
 			}else {
 				regUser.setName(name);
 			}
 			if(gender.isEmpty()){
-				errorText.append("<li>The 'gender' is empty.</li>");
+				errorText.add("The 'gender' is empty.");
 			}else {
 				if(gender.equals("male")) {
-					genderArr[0]= "checked";
+					genderArr[0]= CHECKED;
 				}else {
-					genderArr[1]= "checked";
+					genderArr[1]= CHECKED;
 				}
 			}
 			if(address.isEmpty()){
-				errorText.append("<li>The 'address' is empty.</li>");
+				errorText.add("The 'address' is empty.");
 			}else {
 				if(address.equals("lnr")) {
-					addressArr[0] = "selected";
+					addressArr[0] = SELECTED;
 				}
 				if(address.equals("dnr")) {
-					addressArr[1] = "selected";
+					addressArr[1] = SELECTED;
 				}
 				if(address.equals("crimea")) {
-					addressArr[2] = "selected";
+					addressArr[2] = SELECTED;
 				}
 			}
 			if(comment.isEmpty()){
-				errorText.append("<li>The 'comment' is empty.</li>");
+				errorText.add("The 'comment' is empty.");
 			}else {
 				regUser.setComment(comment);
 			}
 			if(agree == null){
-				errorText.append("<li>The 'agree' is empty.</li>");
+				errorText.add("The 'agree' is empty.");
 			}
 			req.setAttribute("regUser", regUser);
 			req.setAttribute("genderArr", genderArr);
 			req.setAttribute("addressArr", addressArr);
-			if(errorText.toString().equals("<ul>")){
+			if(errorText.size()==0){
 				DBWork dbWorker = new DBWork();
 				dbWorker.setUser(login, password, name, rePassword, gender, address, comment, agree);
-				rd = req.getRequestDispatcher("WEB-INF/views/regSuccess.jsp");
+				rd = req.getRequestDispatcher(REG_SUCCESS);
 			}
 			else{
-				errorText.append("</ul>");
-				req.setAttribute("errorText", errorText.toString());
-				rd = req.getRequestDispatcher("WEB-INF/views/formRegView.jsp");
+				req.setAttribute("errorText", errorText);
+				rd = req.getRequestDispatcher(REG_FORM);
 
 			}
 		}
 		rd.forward(req, resp);
-		errorText.setLength(0);
+		errorText.clear();
 	}
 }

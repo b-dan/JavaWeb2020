@@ -1,9 +1,16 @@
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/source/includes/menu.jsp" %>
 <%@ page isELIgnored = "false" %>
 </center>
 <body>
 	<form>
-	<div class="myblock">${errorText}</div>
+	<div class="myblock">
+	<ul>
+ 	<c:forEach items="${errorText}" var="value">
+	<li><c:out value="${value}"/></li>
+	</c:forEach>
+	</ul>
+	</div>
 	</form>
 	<form id="loginForm" action="./registration" method="post">
 
