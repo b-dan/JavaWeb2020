@@ -12,18 +12,19 @@ import java.sql.SQLException;
 
 import model.User;
 
-public class DBWork extends SQLConnection{
+public class DBWork{
 	private final String SELECT_USER = "SELECT NAME FROM `users` WHERE LOGIN = ? AND PASSWORD = ?;";
 	private final String INSERT_INTO_USERS = "INSERT INTO `users` (`ID`, `LOGIN`, `PASSWORD`, `NAME`, `REPASSWORD`, `GENDER`, `ADDRESS`, `COMMENT`, `AGREE`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private final String SALT = ".dsfe4,";
+	private SQLConnection connection;
 	
 	
 	public DBWork() {
-		super();
+		connection = new SQLConnection();
 	}
 	public User getName(String login, String password) {
 		User user = null;
-		Connection con = getConnection();
+		Connection con = connection.getConnection();
 		try(PreparedStatement ps = con.prepareStatement(SELECT_USER);){
 			ps.setString(1, login);
 			ps.setString(2, hashPassword(password));
@@ -47,7 +48,7 @@ public class DBWork extends SQLConnection{
 	}
 	public void setUser(String login, String password, String name, String rePassword, String gender, String address, String comment, String agree) {
 		PreparedStatement ps = null;
-		Connection con = getConnection();
+		Connection con = connection.getConnection();
 		try{ps = con.prepareStatement(INSERT_INTO_USERS);
 			ps.setString(1, login);
 			ps.setString(2, hashPassword(password));

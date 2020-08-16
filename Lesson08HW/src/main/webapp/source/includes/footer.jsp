@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
+<%@ page isELIgnored = "false" %>
 			  </div>
 				<div id="sidebar">
 					<table border=1>
@@ -13,19 +16,19 @@
                     	<c:otherwise>Guest</c:otherwise>
                     </c:choose>
                     <br />
-                    В вашей корзине 0 товаров.
+                    В вашей корзине ${fn:length(sessionScope.cart)} товаров.
                     </font>
                     </td>
                     </tr>
                     </table>
                     <h2>Боковое меню</h2>
 					<ul id="product">
-						<li><a href="./products">Фигурки и игры</a></li>
-						<li><a href="./products">Комиксы и книги</a></li>
-						<li><a href="./products">Одежда</a></li>
+						<li><a href="./products?catId=1">Фигурки и игры</a></li>
+						<li><a href="./products?catId=2">Комиксы и книги</a></li>
+						<li><a href="./products?catId=3">Одежда</a></li>
 						<li><a href="./registration">Регистрация</a></li>
 						<li><a href="./authorization">Вход</a></li>
-						<li><a href="cart.php">Корзина</a></li>
+						<li><a href="./cart">Корзина</a></li>
 					</ul>
 				</div>
 			</div>

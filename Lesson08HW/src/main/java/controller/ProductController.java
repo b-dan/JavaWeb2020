@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -23,16 +24,20 @@ public class ProductController extends HttpServlet {
      */
     public ProductController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(PRODUCT_FORM);
 		ProductService ps = new ProductService();
-		List<Product> list = ps.getProducts();
+		String category = request.getParameter("catId");
+		List<Product> list = new ArrayList<Product>();
+		if(category!=null) {
+				//list = ps.getProductsByCategoryId(Integer.parseInt(category));
+			list = ps.getProductsByCategoryId(Integer.valueOf(category));
+		}
+		else {
+			list=ps.getProducts();
+		}
 		request.setAttribute("products", list);
 		rd.forward(request, response);
 	}

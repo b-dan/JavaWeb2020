@@ -27,6 +27,12 @@
 	<description></description>
 	<servlet-class>controller.ProductController</servlet-class>
 </servlet>
+<servlet>
+  <servlet-name>cartController</servlet-name>
+  <display-name>cartController</display-name>
+	<description></description>
+  <servlet-class>controller.CartController</servlet-class>
+</servlet>
 <servlet-mapping>
   <servlet-name>user</servlet-name>
   <url-pattern>/authorization</url-pattern>
@@ -38,6 +44,10 @@
 <servlet-mapping>
 	<servlet-name>ProductController</servlet-name>
 	<url-pattern>/products</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+  <servlet-name>cartController</servlet-name>
+  <url-pattern>/cart</url-pattern>
 </servlet-mapping>
 <filter-mapping>
   <filter-name>GzipFilter</filter-name>

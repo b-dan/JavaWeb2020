@@ -36,7 +36,7 @@ Released   : 20110926
 			<li><a href="./products">Товары</a></li>
 			<li><a href="./registration">Регистрация</a></li>
 			<li><a href="./authorization">Вход</a></li>
-			<li><a href="cart.php">Корзина</a></li>
+			<li><a href="./cart">Корзина</a></li>
 		</ul>
 	</div>
 </div>
