@@ -1,8 +1,0 @@
-service\DBWork.class
-service\GZipServletFilter.class
-service\GZipServletOutputStream.class
-model\RegistrationUser.class
-service\GZipServletResponseWrapper.class
-controller\UserController.class
-controller\RegController.class
-model\User.class
