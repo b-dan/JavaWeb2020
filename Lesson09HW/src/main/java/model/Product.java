@@ -6,6 +6,8 @@ public class Product {
 	private String description;
 	private String name;
 	private int category;
+	private int limit = 100;
+	//private String s
 	public Product() {
 		super();
 	}
@@ -38,6 +40,11 @@ public class Product {
 		this.description = description;
 		return this;
 	}
+	public String getCutDescription() {
+		
+		return description.length() > limit ? description.substring(0, limit)+"..." : description;
+	}
+	
 	public String getName() {
 		return name;
 	}

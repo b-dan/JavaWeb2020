@@ -33,6 +33,12 @@
 	<description></description>
   <servlet-class>controller.CartController</servlet-class>
 </servlet>
+<servlet>
+	<servlet-name>OneProductController</servlet-name>
+	<display-name>OneProductController</display-name>
+	<description></description>
+	<servlet-class>controller.OneProductController</servlet-class>
+</servlet>
 <servlet-mapping>
   <servlet-name>user</servlet-name>
   <url-pattern>/authorization</url-pattern>
@@ -48,6 +54,10 @@
 <servlet-mapping>
   <servlet-name>cartController</servlet-name>
   <url-pattern>/cart</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>OneProductController</servlet-name>
+	<url-pattern>/product</url-pattern>
 </servlet-mapping>
 <filter-mapping>
   <filter-name>GzipFilter</filter-name>
