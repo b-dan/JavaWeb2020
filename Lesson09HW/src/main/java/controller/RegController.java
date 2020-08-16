@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.RegistrationUser;
-import service.DBWork;
+
+import model.User;
+import service.DAOFactory;
+import service.UserDAO;
 
 
 
@@ -27,7 +29,10 @@ public class RegController extends HttpServlet{
 	private List <String> errorText = new ArrayList<String>();
 	private String [] genderArr = {"",""};
 	private String [] addressArr = {"","",""};
-	RegistrationUser regUser = new RegistrationUser();
+	public static final int MY_SQL = 1;
+	private DAOFactory daoFactory;
+    private UserDAO userDao;
+	User user = new User();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -58,22 +63,22 @@ public class RegController extends HttpServlet{
 				matcher = pattern.matcher(login);
 				if(!matcher.matches()){
 					errorText.add("The 'login' must be an email.");
-					regUser.setLogin(login);
+					user.setLogin(login);
 				}else {
-					regUser.setLogin(login);
+					user.setLogin(login);
 				}
 			}
 			if(password.isEmpty()){
 				errorText.add("The 'password' is empty.");
 			}else {
-				regUser.setPassword(password);
+				user.setPassword(password);
 			}
 			if(rePassword.isEmpty()){
 				errorText.add("The 'rePassword' is empty.");
 			}else{
 				if(!password.equals(rePassword)){
 					errorText.add("The 'password' and 'rePassword' are not equals.");
-					regUser.setRePassword(rePassword);
+					user.setRePassword(rePassword);
 				}
 				else{
 					pattern = Pattern.compile("^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,})$");
@@ -81,15 +86,15 @@ public class RegController extends HttpServlet{
 					if(!matcher.matches()){
 						errorText.add("Your 'password' do not fit the requirements.");
 					}else {
-						regUser.setPassword(password);
-						regUser.setRePassword(rePassword);
+						user.setPassword(password);
+						user.setRePassword(rePassword);
 					}
 				}
 			}
 			if(name.isEmpty()){
 				errorText.add("The 'name' is empty.");
 			}else {
-				regUser.setName(name);
+				user.setName(name);
 			}
 			if(gender.isEmpty()){
 				errorText.add("The 'gender' is empty.");
@@ -116,17 +121,18 @@ public class RegController extends HttpServlet{
 			if(comment.isEmpty()){
 				errorText.add("The 'comment' is empty.");
 			}else {
-				regUser.setComment(comment);
+				user.setComment(comment);
 			}
 			if(agree == null){
 				errorText.add("The 'agree' is empty.");
 			}
-			req.setAttribute("regUser", regUser);
+			req.setAttribute("regUser", user);
 			req.setAttribute("genderArr", genderArr);
 			req.setAttribute("addressArr", addressArr);
 			if(errorText.size()==0){
-				DBWork dbWorker = new DBWork();
-				dbWorker.setUser(login, password, name, rePassword, gender, address, comment, agree);
+				daoFactory = DAOFactory.getInstance(MY_SQL);
+				userDao = daoFactory.getUserDAO();
+				userDao.setUser(user);
 				rd = req.getRequestDispatcher(REG_SUCCESS);
 			}
 			else{

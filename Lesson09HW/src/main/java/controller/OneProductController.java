@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Product;
-import service.ProductService;
+import service.DAOFactory;
+import service.ProductDAO;
 
 /**
  * Servlet implementation class OneProductController
@@ -20,17 +21,22 @@ import service.ProductService;
 public class OneProductController extends HttpServlet {
 	private static final String ONE_PRODUCT_FORM = "WEB-INF/views/oneProductView.jsp";
 
+	public static final int MY_SQL = 1;
+	private DAOFactory daoFactory;
+	private ProductDAO productDAO;
+	
     public OneProductController() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(ONE_PRODUCT_FORM);
+		daoFactory = DAOFactory.getInstance(MY_SQL);
+		productDAO = daoFactory.getProductDAO();
 		String productId = request.getParameter("prodId");
-		ProductService ps = new ProductService();
 		Product product = null;
 		if(productId!=null) {
-			product = ps.getProductById(Integer.valueOf(productId));
+			product = productDAO.getProductById(Integer.valueOf(productId));
 		}
 		request.setAttribute("product", product);
 		rd.forward(request, response);

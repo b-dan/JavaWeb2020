@@ -11,43 +11,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Product;
-import service.ProductService;
+import service.DAOFactory;
+import service.ProductDAO;
 
-/**
- * Servlet implementation class ProductController
- */
 public class ProductController extends HttpServlet {
 	private static final String PRODUCT_FORM = "WEB-INF/views/productView.jsp";
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	public static final int MY_SQL = 1;
+	private DAOFactory daoFactory;
+	private ProductDAO productDAO;
+	
     public ProductController() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(PRODUCT_FORM);
-		ProductService ps = new ProductService();
+		daoFactory = DAOFactory.getInstance(MY_SQL);
+		productDAO = daoFactory.getProductDAO();
 		String category = request.getParameter("catId");
 		List<Product> list = new ArrayList<Product>();
 		if(category!=null) {
 				//list = ps.getProductsByCategoryId(Integer.parseInt(category));
-			list = ps.getProductsByCategoryId(Integer.valueOf(category));
+			list = productDAO.getProductsByCategoryId(Integer.valueOf(category));
 		}
 		else {
-			list=ps.getProducts();
+			list=productDAO.getProducts();
 		}
 		request.setAttribute("products", list);
 		rd.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 	}
 
 }

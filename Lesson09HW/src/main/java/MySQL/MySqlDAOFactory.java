@@ -1,11 +1,16 @@
-package service;
+package MySQL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SQLConnection {
-	public SQLConnection() {
+import service.DAOFactory;
+import service.ProductDAO;
+import service.UserDAO;
+
+public class MySqlDAOFactory extends DAOFactory{
+	
+	public MySqlDAOFactory() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (InstantiationException e) {
@@ -27,4 +32,14 @@ public class SQLConnection {
 		return conn;
 
 	}
+
+	@Override
+	public UserDAO getUserDAO() {
+		return new MySQLUserDAO(this);
+	}
+	@Override
+	public ProductDAO getProductDAO() {
+		return new MySQLProductDAO(this);
+	}
+
 }
