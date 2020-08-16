@@ -29,17 +29,29 @@ public class CartController extends HttpServlet{
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String productId = request.getParameter("prodId");
+		String deleteId = request.getParameter("deleteById");
 		HttpSession session = request.getSession();
 		List<Product> cartProducts = new ArrayList<Product>();
 		if(session.getAttribute("cart")!=null) {
 			cartProducts = (List<Product>)session.getAttribute("cart");
 		}
+		if(productId!=null) {
 		ProductService ps = new ProductService();
 		cartProducts.add(ps.getProductById(Integer.valueOf(productId)));
 		
 		session.setAttribute("cart", cartProducts);
 		
 		response.sendRedirect("./products");
+		}
+		
+		if(deleteId!=null) {
+			List<Product> afterDeleteCart = (List<Product>)session.getAttribute("cart");
+			
+			afterDeleteCart.stream().filter(p -> p.getId() == Integer.valueOf(deleteId)).findFirst().ifPresent(p -> afterDeleteCart.remove(p));
+			session.setAttribute("cart", afterDeleteCart);
+			
+			response.sendRedirect("./cart");
+		}
 	}
 
 }

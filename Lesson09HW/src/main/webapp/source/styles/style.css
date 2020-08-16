@@ -350,8 +350,10 @@ a:hover {
 }
 
 #product .info  {
+	color: #edfcf9;
 	text-align: left;
-	font-size: 13px;
+	font-size: 14px;
+	text-decoration: none
 }
 #loginForm {
 	width: 290px;
