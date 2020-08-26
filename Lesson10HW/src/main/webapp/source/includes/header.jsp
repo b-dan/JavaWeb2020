@@ -20,6 +20,7 @@ Released   : 20110926
 <link href="./source/styles/style.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="jquery.poptrox-0.1.js"></script>
+<script src="./source/scripts/jquery-3.5.1.js"></script>
 <style>
    body { background: #f6d654 url(./source/images/background.jpg);}
  </style>

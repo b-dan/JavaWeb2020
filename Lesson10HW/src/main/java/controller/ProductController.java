@@ -32,7 +32,6 @@ public class ProductController extends HttpServlet {
 		String category = request.getParameter("catId");
 		List<Product> list = new ArrayList<Product>();
 		if(category!=null) {
-				//list = ps.getProductsByCategoryId(Integer.parseInt(category));
 			list = productDAO.getProductsByCategoryId(Integer.valueOf(category));
 		}
 		else {

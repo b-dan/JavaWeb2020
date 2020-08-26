@@ -16,7 +16,7 @@
                     	<c:otherwise>Guest</c:otherwise>
                     </c:choose>
                     <br />
-                    В вашей корзине ${fn:length(sessionScope.cart)} товаров.
+                    В вашей корзине <span id="amountField">${sessionScope.qntAll}</span> товаров.
                     </font>
                     </td>
                     </tr>
