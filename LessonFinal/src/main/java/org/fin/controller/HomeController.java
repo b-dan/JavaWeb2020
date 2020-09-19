@@ -1,0 +1,17 @@
+package org.fin.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/home")
+public class HomeController {
+	
+	@RequestMapping
+    public String getPost(){
+        return "index";
+    }
+}
